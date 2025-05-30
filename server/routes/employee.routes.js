@@ -8,7 +8,12 @@ const deleteEmployeeLimiter = rateLimit({
     max: 50, // limit each IP to 50 requests per windowMs
 });
 
-router.get('/', employee.getEmployees);
+const getEmployeesLimiter = rateLimit({
+    windowMs: 15 * 60 * 1000, // 15 minutes
+    max: 100, // limit each IP to 100 requests per windowMs
+});
+
+router.get('/', getEmployeesLimiter, employee.getEmployees);
 router.post('/', employee.createEmployee);
 const getEmployeeLimiter = rateLimit({
     windowMs: 15 * 60 * 1000, // 15 minutes
